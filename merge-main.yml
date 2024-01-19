@@ -1,0 +1,22 @@
+name: Merge Main Branch
+
+on:
+  pull:
+    branches:
+      - main
+
+jobs:
+  merge-branches:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Merge main into feature branches
+        run: |
+          for branch in $(git branch --list 'feature/*'); do
+            git checkout "$branch"
+            git merge main --no-edit
+            git push origin "$branch"
+          done
